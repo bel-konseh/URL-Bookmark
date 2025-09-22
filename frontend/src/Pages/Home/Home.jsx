@@ -3,13 +3,20 @@
 import AddUrl from "../../components/Add-urls/AddUrl";
 import UrlList from "../../components/main-page-components/UrlList";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [urlList, setUrlList] = useState([]);
   const [isLoading, setLoading] = useState(false);
 
+  const navigate = useNavigate();
 
   async function getUrls() {
+
+    const token = localStorage.getItem("token");
+    if(!token || token === "undefined" || token === null){
+      navigate('/login')
+    }
       setLoading(true);
           try {
         

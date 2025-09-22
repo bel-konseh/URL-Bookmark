@@ -4,7 +4,6 @@ import './LoginSignupForm.css';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    name: '',
     email: '',
     password: '',
     confirmPassword: ''
@@ -27,7 +26,7 @@ const Signup = () => {
     setIsLoading(true);
 
     // Validation
-    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
+    if ( !formData.email || !formData.password || !formData.confirmPassword) {
       setError('Please fill in all fields');
       setIsLoading(false);
       return;
@@ -52,34 +51,25 @@ const Signup = () => {
     }
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Check if user already exists
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-      const existingUser = users.find(user => user.email === formData.email);
+      const response = await fetch('http://localhost:3000/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        })
+      });
 
-      if (existingUser) {
-        setError('An account with this email already exists');
-        setIsLoading(false);
-        return;
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        navigate('/login');
+      } else {
+
+        setError('Signup failed. Please try again.');
       }
-
-      // Save user
-      const newUser = {
-        id: Date.now(),
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-        createdAt: new Date().toISOString()
-      };
-
-      users.push(newUser);
-      localStorage.setItem('users', JSON.stringify(users));
-      localStorage.setItem('currentUser', JSON.stringify(newUser));
-      localStorage.setItem('token', 'dummy-token');
-      
-      navigate('/home');
     } catch (err) {
       setError('Signup failed. Please try again.');
     } finally {
@@ -97,19 +87,6 @@ const Signup = () => {
       {error && <div className="error-message">{error}</div>}
 
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="name">Full Name</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Enter your full name"
-            required
-            disabled={isLoading}
-          />
-        </div>
 
         <div className="form-group">
           <label htmlFor="email">Email Address</label>

@@ -8,12 +8,6 @@ import Login from './components/LoginSignup/login'
 function App() {
 
 
-  // if(!token && pathname !== "/login" && pathname !== "/signup"){
-  //   // return <Navigate to="/login" />
-  //   window.location.href = "/login"
-    
-  // 
-  
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route pathname="/"  element={<Layout />}>

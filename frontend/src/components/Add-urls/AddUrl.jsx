@@ -17,10 +17,9 @@ function AddUrl()  {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({ title, url }),
+        body: JSON.stringify({ url, title }),
       })
       if(result.ok){
-        // window.location.reload()
         const data = await result.json();
         console.log(data.data);
         window.location.reload()
@@ -58,7 +57,7 @@ function AddUrl()  {
               onChange={(e) => setUrl(e.target.value)}
               required 
             />
-            <span onClick={() => navigator.clipboard.readText().then(setUrl)}>paste</span>
+            <span onClick={() => navigator.clipboard.readText().then(setUrl)}>Paste URl from clipboard</span>
           </div>
           <button type="submit" className="submit-btn"> Add Bookmark</button>
         </form>

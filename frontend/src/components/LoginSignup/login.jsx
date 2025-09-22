@@ -32,20 +32,22 @@ const Login = () => {
     }
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-      const user = users.find(u => u.email === formData.email && u.password === formData.password);
+      const response = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
 
-      if (user) {
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        localStorage.setItem('token', 'dummy-token');
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('token', data.session.access_token);
         navigate('/home');
       } else {
-        setError('Invalid email or password');
-      }
-    } catch (err) {
+        setError('Login failed. Please try again.');
+      }   
+    } catch (error) {
       setError('Login failed. Please try again.');
     } finally {
       setIsLoading(false);
