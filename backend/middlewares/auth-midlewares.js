@@ -2,7 +2,7 @@ import supabase from "../config/supabase-config.js";
 
 export const isLoggedInMiddleware = async (req, res, next) => {
 
-    const authHeader = req.headers.authorization;
+    const authHeader = req.headers['Authorization'] || req.headers.authorization;
 
     if( !authHeader || !authHeader.startsWith("Bearer ")){
 

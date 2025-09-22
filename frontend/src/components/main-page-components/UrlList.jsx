@@ -1,41 +1,25 @@
 
+
 import React from 'react'
 import "./UrlList.css"
 import UrlItem from './UrlItem'
+
 function UrlList({urlList}) {
-
+    
   return (
-    <div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Url title</th>
-                    <th>Url description</th>
-                    <th>Copy Url to clipboard</th>
-                    <th>Open in new tap</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                            
-                        
-        {
-            urlList && urlList.length > 0 && urlList.map((url, index) => {
-
-                return (
-                    <UrlItem key={index} url={url.url} title={url.title}/>
-                    
-                )
-            })
-        }
-        {
-            !urlList || urlList && urlList.length === 0 && <p>No urls found please add some</p>
-        }
-            </tbody>
-        </table>
-      
+    <div className="url-list">
+        {urlList && urlList.length > 0 ? (
+            urlList.map((url, index) => (
+                <UrlItem key={index} id={url.id} url={url.url} title={url.title}/>
+            ))
+        ) : (
+            <div className="empty-state">
+                
+                <h3>No URLs Found</h3>
+                <p>You haven't saved any URLs yet. Start adding some to see them here.</p>
+            </div>
+        )}
     </div>
   )
 }
-
 export default UrlList
