@@ -3,40 +3,38 @@ import { useNavigate, Link } from 'react-router-dom';
 import './LoginSignupForm.css';
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // async login function
+  const loginUser = async ({ email, password }) => {
+    // Simulate API delay
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    return users.find((u) => u.email === email && u.password === password);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    setIsLoading(true);
 
-    // Validation
     if (!formData.email || !formData.password) {
       setError('Please fill in all fields');
-      setIsLoading(false);
       return;
     }
 
+    setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-      const user = users.find(u => u.email === formData.email && u.password === formData.password);
+      const user = await loginUser(formData);
 
       if (user) {
         localStorage.setItem('currentUser', JSON.stringify(user));

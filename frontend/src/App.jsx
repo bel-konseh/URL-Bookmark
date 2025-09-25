@@ -5,6 +5,7 @@ import Home from './Pages/Home/Home'
 import Layout from './Pages/Layout'
 import Signup from './components/LoginSignup/SignupForm'
 import Login from './components/LoginSignup/login'
+import Footer from './components/LoginSignup/footer'
 function App() {
 
 
@@ -13,6 +14,7 @@ function App() {
   //   window.location.href = "/login"
     
   // 
+  <Footer/>
   
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -22,6 +24,8 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login/>} />
         <Route path="/signup" element={<Signup />} />
+         {/* <Route path="/footer" element={<Footer/>} /> */}
+
       </Route>
       
     )
@@ -30,6 +34,7 @@ function App() {
 
   return(
       <RouterProvider router={router} />
+      
   )
 
 }
